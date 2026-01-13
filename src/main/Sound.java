@@ -32,13 +32,19 @@ public class Sound {
 	
 	public void Play() {
 		
+		clip.start();
+		
 	}
 	
 	public void Loop() {
 		
+		clip.loop(clip.LOOP_CONTINUOUSLY);
+		
 	}
 	
 	public void Stop() {
+		
+		clip.stop();
 		
 	}
 	

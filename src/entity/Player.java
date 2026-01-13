@@ -122,6 +122,15 @@ public class Player extends Entity {
 		}
 		
 	}
+	
+	public void pickUpObject(int i) {
+		
+		if(i != 999) {
+			
+		}
+		
+	}
+	
 	public void draw(Graphics g2) {
 		
 //		g2.setColor(Color.white);
