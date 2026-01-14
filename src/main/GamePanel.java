@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
@@ -27,6 +30,14 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int maxWorldRow = 50;
 	public final int worldWidth = tileSize * maxWorldCol;
 	public final int worldHeight = tileSize * maxWorldRow;
+	public final int maxMap = 10;
+	public int currentMap = 0;
+	
+	//Fullscreen
+	int screenWidth2 = screenWidth;
+	int screenHeight2 = screenHeight;
+	BufferedImage tempScreen;
+	Graphics2D g2;
 	
 	//FPS
 	int FPS=60;
@@ -64,6 +75,23 @@ public class GamePanel extends JPanel implements Runnable {
 		
 		playMusic(0);
 		gameState = titleState;
+		
+		tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
+		g2 = (Graphics2D)tempScreen.getGraphics();
+		
+		setFullScreen();
+	}
+	
+	public void setFullScreen() {
+		
+		//Get Local Screen Device
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice gd = ge.getDefaultScreenDevice();
+		gd.setFullScreenWindow(Main.window);
+		
+		//GET FULL SCREEN WIDTH AND HEIGHT
+		screenWidth2 = Main.window.getWidth();
+		screenHeight2 = Main.window.getHeight();
 	}
 	
 	public void startGameThread() {
@@ -85,8 +113,8 @@ public class GamePanel extends JPanel implements Runnable {
 			 
 			
 
-			repaint();
-			
+			drawToTempScreen();
+			drawToScreen();
 			
 			try {
 				double remainingTime = nextDrawTime - System.nanoTime();
@@ -119,35 +147,31 @@ public class GamePanel extends JPanel implements Runnable {
 		
 	}
 	
-	public void paintComponent(Graphics g) {
-		
-		super.paintComponent(g);
-		Graphics2D g2 = (Graphics2D)g;
-		
-		
+	public void drawToTempScreen(){
 		
 		//Title SCreen
-		if(gameState == titleState) {
-			ui.draw(g2);
-		}
-		//Others
-		else {
-			//Tile
-			tileM.draw(g2);
-			
-			//Player
-			player.draw(g2);
-			
-			//UI
-			ui.draw(g2);
-		}
+				if(gameState == titleState) {
+					ui.draw(g2);
+				}
+				//Others
+				else {
+					//Tile
+					tileM.draw(g2);
+					
+					//Player
+					player.draw(g2);
+					
+					//UI
+					ui.draw(g2);
+				}
 		
+	}
+	
+	public void drawToScreen() {
 		
-		
-		
-		
-		
-		g2.dispose();
+		Graphics g = getGraphics();
+		g.drawImage(tempScreen, 0, 0, screenWidth2, screenHeight2, null);
+		g.dispose();
 	}
 	
 	public void playMusic(int i) {

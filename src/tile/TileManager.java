@@ -15,17 +15,19 @@ public class TileManager {
 	
 	GamePanel gp;
 	public Tile[] tile;
-	public int mapTileNum[][];
+	public int mapTileNum[][][];
 	
 	public TileManager(GamePanel gp) {
 		
 		this.gp = gp;
 		
-		tile = new Tile[10];
-		mapTileNum = new int [gp.maxWorldCol][gp.maxWorldRow];
+		tile = new Tile[50];
+		mapTileNum = new int [gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
 		
 		getTileImage();
-		loadMap("/maps/world01.txt");
+		
+		loadMap("/maps/world01.txt", 1);
+		loadMap("/maps/House.txt", 0);
 	}
 		public void getTileImage() {
 			
@@ -52,7 +54,12 @@ public class TileManager {
 				tile[5] = new Tile();
 				tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/sand.png"));
 				
+				tile[6] = new Tile();
+				tile[6].image = ImageIO.read(getClass().getResourceAsStream("/tiles/floor01.png"));
 				
+				tile[41] = new Tile();
+				tile[41].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Void.png"));
+				tile[41].collision = true;
 				
 			}catch(IOException e) {
 				e.printStackTrace();
@@ -60,7 +67,7 @@ public class TileManager {
 			
 		}
 		
-		public void loadMap(String filePath) {
+		public void loadMap(String filePath, int map) {
 			
 			try {
 				
@@ -80,7 +87,7 @@ public class TileManager {
 						
 						int num = Integer.parseInt(numbers[col]);
 						
-						mapTileNum[col][row] = num;
+						mapTileNum[map][col][row] = num;
 						col++;
 					}
 					if (col == gp.maxWorldCol) {
@@ -104,7 +111,7 @@ public class TileManager {
 			
 			while(worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
 				
-				int tileNum = mapTileNum[worldCol][worldRow];
+				int tileNum = mapTileNum[gp.currentMap][worldCol][worldRow];
 				
 				int worldX = worldCol * gp.tileSize;
 				int worldY = worldRow * gp.tileSize;
