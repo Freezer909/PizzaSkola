@@ -41,6 +41,20 @@ public class UI {
 		//PLAy STATE
 		if(gp.gameState == gp.playState) {
 			//YEs yes play state
+			if(gp.keyH.checkDrawTime == true) {
+	            g2.setFont(arial_40.deriveFont(20F)); // Smaller font for debug
+	            g2.setColor(Color.white);
+	            
+	            int x = 10;
+	            int y = 400; // Positioned near the bottom left
+	            int lineHeight = 25;
+
+	            g2.drawString("WorldX: " + gp.player.worldX, x, y);
+	            g2.drawString("WorldY: " + gp.player.worldY, x, y + lineHeight);
+	            g2.drawString("Col: " + (gp.player.worldX / gp.tileSize), x, y + lineHeight * 2);
+	            g2.drawString("Row: " + (gp.player.worldY / gp.tileSize), x, y + lineHeight * 3);
+	        }
+			
 		}
 		//PAUSE STATE
 		if(gp.gameState == gp.pauseState) {

@@ -30,6 +30,8 @@ public class Player extends Entity {
 		solidArea = new Rectangle();
 		solidArea.x = 8;
 		solidArea.y = 16;
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
 		solidArea.width = 32;
 		solidArea.height = 32;
 	
@@ -86,6 +88,8 @@ public class Player extends Entity {
 			//CHECK TILE COLLISION
 			collisionOn = false;
 			gp.cChecker.checkTile(this);
+			//Check Event
+			gp.eHandler.checkEvent();
 			
 			//IF COLLISION IS FLASE< PL:AYER CAN MOVE
 			
