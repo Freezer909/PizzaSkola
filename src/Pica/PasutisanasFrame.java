@@ -1,12 +1,31 @@
 package Pica;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class PasutisanasFrame {
-		
+	
+	public static String KlientaVards = "Nav zināms";
+	public static String KlientaTel = "Nav zināms";
+	public static String KlientaAdrese = "Nav zināms";
 	public static JFrame pasutisanasPanels;
 	public static String ievade;
 	
@@ -52,13 +71,13 @@ public class PasutisanasFrame {
 	    pasutisanasPanels.setLocationRelativeTo(null); 
 	    pasutisanasPanels.setAlwaysOnTop(true); 
 	    
-	    // Use BorderLayout only for the main structure
+
 	    pasutisanasPanels.setLayout(new BorderLayout());
 
 	    CardLayout cl = new CardLayout();
 	    JPanel main = new JPanel(cl);
 	    
-	    // Create the sub-panels
+
 	    JPanel adresePanel = AdresePanelis();
 	    JPanel pasutitPanel = PasutitPanelis();
 	    JPanel vesturePanel = VesturePanelis();
@@ -67,7 +86,7 @@ public class PasutisanasFrame {
 	    main.add(pasutitPanel, "PASUTIT");
 	    main.add(vesturePanel, "VESTURE");
 	    
-	    // Create the sidebar
+
 	    JPanel izv = IzvelesPanelis(cl, main);
 	    
 	    pasutisanasPanels.add(izv, BorderLayout.WEST);
@@ -87,7 +106,6 @@ public class PasutisanasFrame {
 		JButton pasutit = new JButton("Pasūtīt picu");
 		JButton vesture = new JButton("Apskatīties vēsturi");
 		
-		// Styling and Placement using setBounds(x, y, width, height)
 		int bW = 160; // Button Width
 		int bH = 50;  // Button Height
 		int bX = 20;  // Button X (left margin)
@@ -100,7 +118,7 @@ public class PasutisanasFrame {
 		pasutit.setFocusable(false);
 		vesture.setFocusable(false);
 
-		// Logic to switch screens
+		
 		adrese.addActionListener(e -> cl.show(main, "ADRESE"));
 		pasutit.addActionListener(e -> cl.show(main, "PASUTIT"));
 		vesture.addActionListener(e -> cl.show(main, "VESTURE"));
@@ -117,7 +135,6 @@ public class PasutisanasFrame {
 	    panel.setLayout(null);
 	    panel.setBackground(new Color(240, 240, 240));
 
-	    // --- VĀRDS ---
 	    JLabel Vards = new JLabel("Vārds:");
 	    Vards.setBounds(100, 120, 100, 30);
 	    JTextField VardaIevad = new JTextField();
@@ -127,7 +144,6 @@ public class PasutisanasFrame {
 	    VardaKluda.setForeground(Color.RED);
 	    VardaKluda.setFont(new Font("Arial", Font.PLAIN, 10));
 
-	    // --- TELEFONS ---
 	    JLabel Tel = new JLabel("Telefons:");
 	    Tel.setBounds(100, 170, 100, 30);
 	    JTextField TelIevad = new JTextField();
@@ -137,7 +153,6 @@ public class PasutisanasFrame {
 	    TelKluda.setForeground(Color.RED);
 	    TelKluda.setFont(new Font("Arial", Font.PLAIN, 10));
 
-	    // --- ADRESE ---
 	    JLabel Adr = new JLabel("Adrese:");
 	    Adr.setBounds(100, 220, 100, 30);
 	    JTextField AdreseIevad = new JTextField(); // Pārdēvēju uz skaidrāku nosaukumu
@@ -147,14 +162,13 @@ public class PasutisanasFrame {
 	    AdreseKluda.setForeground(Color.RED);
 	    AdreseKluda.setFont(new Font("Arial", Font.PLAIN, 10));
 
-	    // --- POGA (Tagad atkal augstāk, jo e-pasts ir prom) ---
 	    JButton PievienotPoga = new JButton("Pievienot");
 	    PievienotPoga.setBounds(200, 300, 120, 40);
 	    PievienotPoga.setBackground(new Color(46, 204, 113));
 	    PievienotPoga.setForeground(Color.WHITE);
 
 	    PievienotPoga.addActionListener(e -> {
-	        // Reset kļūdas
+	    	
 	        VardaKluda.setText("");
 	        TelKluda.setText("");
 	        AdreseKluda.setText("");
@@ -189,8 +203,26 @@ public class PasutisanasFrame {
 	        }
 
 	        if (!hasError) {
+	        	
+	        	KlientaVards = vards;
+	            KlientaTel = tel;
+	            KlientaAdrese = adrese;
+	        	
 	            System.out.println("Dati veiksmīgi sagatavoti: " + vards + ", " + tel + ", " + adrese);
-	            // Šeit nāks faila rakstīšana
+	            try {
+	                FileWriter fw = new FileWriter("Adrese.txt", true);
+	                PrintWriter pw = new PrintWriter(fw);
+	                pw.println(vards+", "+tel+", "+adrese);
+	                pw.println("++++++++++++++++++++++++++++++++++++++++++\n");
+	                JOptionPane.showMessageDialog(pasutisanasPanels, "Adrese veiksmigi pievienota!");
+	                pw.close();
+
+	                }catch(IOException ex) {
+	                JOptionPane.showMessageDialog(null,
+	                "Kļūda ierakstot failā", "Kluda",
+	                JOptionPane.ERROR_MESSAGE);
+	             }
+
 	        }
 	    });
 
@@ -203,15 +235,142 @@ public class PasutisanasFrame {
 	}
 
 	private static JPanel PasutitPanelis() {
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setBackground(Color.WHITE);
-		
-		JLabel temp = new JLabel("Šeit būs picu izvēle (Izmanto setLayout(null) šeit arī)");
-		temp.setBounds(50, 50, 400, 30);
-		panel.add(temp);
-		
-		return panel;
+	    Picerija.inicializetDatus();
+	    
+	    JPanel panel = new JPanel();
+	    panel.setLayout(null);
+	    panel.setBackground(Color.WHITE);
+
+	    JLabel kopejaCenaLbl = new JLabel("Cena: 0.00€");
+	    kopejaCenaLbl.setFont(new Font("Arial", Font.BOLD, 18));
+	    kopejaCenaLbl.setBounds(280, 255, 150, 45); // Novietota blakus pogai
+	    panel.add(kopejaCenaLbl);
+	    
+	    //pizaaa
+	    JLabel picaLbl = new JLabel("Izvēlieties picu:");
+	    picaLbl.setBounds(50, 30, 150, 25);
+	    panel.add(picaLbl);
+
+	    JComboBox<Pica> picasCombo = new JComboBox<>(Picerija.picasSaraksts.toArray(new Pica[0]));
+	    picasCombo.setBounds(50, 60, 250, 30);
+	    panel.add(picasCombo);
+	    
+	    JLabel izmersLbl = new JLabel("Izmērs:");
+	    izmersLbl.setBounds(320, 30, 100, 25);
+	    panel.add(izmersLbl);
+
+	    JComboBox<String> izmeruCombo = new JComboBox<>(Picerija.picasIzmeri);
+	    izmeruCombo.setBounds(320, 60, 150, 30);
+	    panel.add(izmeruCombo);
+
+	    JLabel piedevuLbl = new JLabel("Papildus piedevas (0.80€/gab):");
+	    piedevuLbl.setBounds(50, 110, 250, 25);
+	    panel.add(piedevuLbl);
+
+
+	    ArrayList<JCheckBox> piedevuKastes = new ArrayList<>();
+	    int yPos = 140;
+
+
+	    for (String piedeva : Picerija.visasPiedevas) {
+	        JCheckBox cb = new JCheckBox(piedeva);
+	        cb.setBounds(50, yPos, 150, 20);
+	        cb.setBackground(Color.WHITE);
+	        panel.add(cb);
+	        piedevuKastes.add(cb);
+	        yPos += 25;
+	    }
+
+
+	    JLabel merceLbl = new JLabel("Mērce:");
+	    merceLbl.setBounds(320, 110, 100, 25);
+	    panel.add(merceLbl);
+
+	    JComboBox<String> mercesCombo = new JComboBox<>(Picerija.visasMerces.toArray(new String[0]));
+	    mercesCombo.setBounds(320, 140, 150, 30);
+	    panel.add(mercesCombo);
+
+
+	    JCheckBox chkMalina = new JCheckBox("Sieraina maliņa (+1.50€)");
+	    chkMalina.setBounds(320, 190, 200, 25);
+	    chkMalina.setBackground(Color.WHITE);
+	    panel.add(chkMalina);
+
+
+
+
+	    ActionListener cenasAtjaunotajs = e -> {
+	        Pica tempPica = (Pica) picasCombo.getSelectedItem();
+	        if (tempPica != null) {
+
+	            Pica kalkulators = new Pica(tempPica.getNosaukums(), tempPica.getPamataCena());
+	            kalkulators.setIzmers((String) izmeruCombo.getSelectedItem());
+	            kalkulators.setSierainaMalina(chkMalina.isSelected());
+	            
+	            for (JCheckBox cb : piedevuKastes) {
+	                if (cb.isSelected()) kalkulators.pievienotPiedevu(cb.getText());
+	            }
+	            
+	            kopejaCenaLbl.setText("Cena: " + String.format("%.2f", kalkulators.aprekinatGalaCenu()) + "€");
+	        }
+	    };
+
+
+	    picasCombo.addActionListener(cenasAtjaunotajs);
+	    izmeruCombo.addActionListener(cenasAtjaunotajs);
+	    chkMalina.addActionListener(cenasAtjaunotajs);
+	    for (JCheckBox cb : piedevuKastes) {
+	        cb.addActionListener(cenasAtjaunotajs);
+	    }
+
+
+	    cenasAtjaunotajs.actionPerformed(null);
+
+	    JButton pirktPoga = new JButton("PIRKT");
+	    pirktPoga.setBounds(50, yPos + 30, 220, 45);
+	    pirktPoga.setBackground(new Color(39, 174, 96));
+	    pirktPoga.setForeground(Color.WHITE);
+	    pirktPoga.setFont(new Font("Arial", Font.BOLD, 16));
+	    panel.add(pirktPoga);
+
+	    pirktPoga.addActionListener(e -> {
+
+	        if (KlientaVards.equals("Nav zināms") || KlientaAdrese.equals("Nav zināms") || KlientaAdrese.isEmpty()) {
+	            JOptionPane.showMessageDialog(pasutisanasPanels, 
+	                "Kļūda! Pirms pasūtīšanas obligāti jāievada adrese sadaļā 'Ievadīt adresi'.", 
+	                "Adrese nav atrasta", 
+	                JOptionPane.WARNING_MESSAGE);
+	            return; 
+	        }
+
+
+	        Pica izveleta = (Pica) picasCombo.getSelectedItem();
+	        String izmers = (String) izmeruCombo.getSelectedItem();
+	        String merce = (String) mercesCombo.getSelectedItem();
+	        double galigaCena = Double.parseDouble(kopejaCenaLbl.getText().replace("Cena: ", "").replace("€", "").replace(",", "."));
+
+	        String izveletasPiedevas = "";
+	        for (JCheckBox cb : piedevuKastes) {
+	            if (cb.isSelected()) izveletasPiedevas += cb.getText() + " ";
+	        }
+
+	        try (PrintWriter pw = new PrintWriter(new FileWriter("Pasutijumi.txt", true))) {
+	            pw.println("PASŪTĪJUMS KLIENTAM: " + KlientaVards);
+	            pw.println("Telefons: " + KlientaTel + " | Adrese: " + KlientaAdrese);
+	            pw.println("Pica: " + izveleta.getNosaukums() + " [" + izmers + "]");
+	            pw.println("Piedevas: " + (izveletasPiedevas.isEmpty() ? "Nav" : izveletasPiedevas));
+	            pw.println("SUMMA: " + String.format("%.2f", galigaCena) + "€");
+	            pw.println("------------------------------------------\n");
+	            
+	            JOptionPane.showMessageDialog(pasutisanasPanels, "Pasūtījums veiksmīgi nosūtīts!\n"
+	            		+ "Jūsu pasūtijums tiks atvest pēc 1 minutes");
+	            
+	        } catch (IOException ex) {
+	            JOptionPane.showMessageDialog(pasutisanasPanels, "Kļūda saglabājot pasūtījumu!");
+	        }
+	    });
+
+	    return panel;
 	}
 	
 	private static JPanel VesturePanelis() {
