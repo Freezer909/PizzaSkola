@@ -66,7 +66,7 @@ public class EventHandler {
 				}			
 			else if(hit(2,17,24, "any") == true) {teleport(1,36,24);}
 			
-
+			//Picerijas darbnieka durvis
 			if(hit(2, 10, 16, "up") == true) { 
 			    if(gp.player.Darbs == 1) {
 			        teleport(2, 10, 14); 
@@ -78,25 +78,22 @@ public class EventHandler {
 			else if(hit(2, 10, 16, "down") == true) { 
 			    teleport(2, 10, 18);
 			}
-			
+			//darbinieka dators
 			if(hit(2, 15, 8, "up") == true) { 
-	            if(gp.keyH.ePressed) {
+			    if(gp.keyH.ePressed) {
+			        if(gp.player.Darbs == 1) {
+			            new PizerijasFrame(); 
+			            gp.keyH.ePressed = false; 
+			        }
+			    }
+			} 
 
-	                if(gp.player.Darbs == 1) {
-	                    new PizerijasFrame(); 
-	                    gp.keyH.ePressed = false; 
-
-	            }
-	        }
-
-
-	        if(hit(0, 5, 5, "any") == true) { 
-	            if(gp.keyH.ePressed) {
-	                new PasutisanasFrame(); 
-	                gp.keyH.ePressed = false;
-	            }
-	        }
-			
+			// personigais dators
+			if(hit(0, 14, 8, "any") == true) { 
+			    if(gp.keyH.ePressed) {
+			        PasutisanasFrame.pasutisanasPanelis(); 
+			        gp.keyH.ePressed = false;
+			    }
 			}
 		}
 	}

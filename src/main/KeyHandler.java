@@ -23,6 +23,10 @@ public class KeyHandler implements KeyListener {
 		
 		int code = e.getKeyCode();
 		
+		if(code == KeyEvent.VK_E) {
+	        ePressed = true;
+	    }
+		
 		//TITLE STATE
 		if(gp.gameState == gp.titleState) {
 			
@@ -51,9 +55,7 @@ public class KeyHandler implements KeyListener {
 				}
 			}
 			
-		    if(code == KeyEvent.VK_E) {
-		        ePressed = true;
-		    }
+		    
 			
 		}
 		

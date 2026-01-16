@@ -8,6 +8,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import entity.Player;
@@ -49,20 +50,21 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int titleState = 3;
 	public final int optionsState = 4;
 	
+	//PLayers
+		KeyHandler keyH = new KeyHandler(this);
+		public Player player = new Player(this,keyH);	
 	
 	//System
 	Sound music = new Sound();
 	Sound se = new Sound();
 	TileManager tileM = new TileManager(this);
-	KeyHandler keyH = new KeyHandler(this);
 	public UI ui = new UI(this);
 	public EventHandler eHandler = new EventHandler(this);
 	Thread gameThread;
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	
 	
-	//PLayers
-	public Player player = new Player(this,keyH);	
+	
 	
 	public GamePanel(){
 		
@@ -85,15 +87,17 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 	
 	public void setFullScreen() {
-		
-		//Get Local Screen Device
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice gd = ge.getDefaultScreenDevice();
-		gd.setFullScreenWindow(Main.window);
-		
-		//GET FULL SCREEN WIDTH AND HEIGHT
-		screenWidth2 = Main.window.getWidth();
-		screenHeight2 = Main.window.getHeight();
+
+	    Main.window.dispose(); 
+
+	    Main.window.setUndecorated(true);
+
+	    Main.window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+	    Main.window.setVisible(true);
+
+	    screenWidth2 = Main.window.getWidth();
+	    screenHeight2 = Main.window.getHeight();
 	}
 	
 	public void startGameThread() {
@@ -140,8 +144,11 @@ public class GamePanel extends JPanel implements Runnable {
 	
 	public void update() {
 		
+		
+		
 		if(gameState == playState) {
 			player.update();
+			eHandler.checkEvent();
 		}
 		if(gameState == pauseState) {
 			
