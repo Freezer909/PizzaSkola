@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
 
+import entity.Player;
 import main.GamePanel;
 
 public class TileManager {
@@ -87,6 +88,14 @@ public class TileManager {
 				
 				tile[14] = new Tile();
 				tile[14].image = ImageIO.read(getClass().getResourceAsStream("/tiles/pizzaFloor.png"));
+				
+				tile[15] = new Tile();
+				tile[15].image = ImageIO.read(getClass().getResourceAsStream("/tiles/counter.png"));
+				tile[15].collision = true;
+				
+				tile[16] = new Tile();
+				tile[16].image = ImageIO.read(getClass().getResourceAsStream("/tiles/counterPC.png"));
+				tile[16].collision = true;
 				
 				tile[41] = new Tile();
 				tile[41].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Void.png"));

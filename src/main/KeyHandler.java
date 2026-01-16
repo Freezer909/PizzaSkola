@@ -8,6 +8,7 @@ public class KeyHandler implements KeyListener {
 	GamePanel gp;
 	public boolean upPressed, downPressed, leftPressed, rightPressed;
 	public boolean checkDrawTime = false;
+	public boolean ePressed;
 	
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -50,7 +51,13 @@ public class KeyHandler implements KeyListener {
 				}
 			}
 			
+		    if(code == KeyEvent.VK_E) {
+		        ePressed = true;
+		    }
+			
 		}
+		
+		
 		
 		//PLAY STATE
 		if(code == KeyEvent.VK_W) {
@@ -86,7 +93,28 @@ public class KeyHandler implements KeyListener {
             }
         }
 		
-		
+		//STRADNIEKS VAI PIRCEJS 
+				if(gp.gameState == gp.optionsState) {
+				    if(code == KeyEvent.VK_W) {
+				        gp.ui.commandNum--;
+				        if(gp.ui.commandNum < 0) gp.ui.commandNum = 1;
+				    }
+				    if(code == KeyEvent.VK_S) {
+				        gp.ui.commandNum++;
+				        if(gp.ui.commandNum > 1) gp.ui.commandNum = 0;
+				    }
+				    if(code == KeyEvent.VK_ENTER) {
+
+				    	if(gp.ui.commandNum == 0) {
+				            gp.player.Darbs = 1;
+				        } else if(gp.ui.commandNum == 1) {
+				            gp.player.Darbs = 2;
+				        }
+				    	
+				        gp.eHandler.teleport(2, 17, 24); 
+				        gp.gameState = gp.playState;
+				    }
+				}
 		
 	}
 
@@ -110,6 +138,10 @@ public class KeyHandler implements KeyListener {
 		if(code == KeyEvent.VK_D) {
 			rightPressed = false;
 		}
+		
+		if(code == KeyEvent.VK_E) {
+	        ePressed = false;
+	    }
 		
 	}
 

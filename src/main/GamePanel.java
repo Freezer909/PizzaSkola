@@ -47,6 +47,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int playState = 1;
 	public final int pauseState = 2;
 	public final int titleState = 3;
+	public final int optionsState = 4;
 	
 	
 	//System
@@ -144,6 +145,9 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 		if(gameState == pauseState) {
 			
+		}
+		if(gameState == optionsState) {
+
 		}
 		
 	}

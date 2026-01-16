@@ -60,6 +60,12 @@ public class UI {
 		if(gp.gameState == gp.pauseState) {
 			drawPauseScreen();
 		}
+		
+		//OptionsPanel
+		if(gp.gameState == gp.optionsState) {
+	        drawOptionsPanel();
+	    }
+		
 	}
 	
 	private void drawTitleScreen() {
@@ -68,6 +74,8 @@ public class UI {
 	   
 	        g2.drawImage(titleImage, 0, 0, gp.screenWidth, gp.screenHeight, null);
 	    }
+		
+		
 		
 		//TITLE NAME
 		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 60F));
@@ -115,6 +123,55 @@ public class UI {
 	    if(commandNum == 2) {
 	    	g2.drawString(">", x - gp.tileSize, y);
 	    }
+	}
+
+	public void drawOptionsPanel() {
+	    
+
+	    int x = gp.tileSize * 2;
+	    int y = gp.tileSize * 6;
+	    int width = gp.screenWidth - (gp.tileSize * 4);
+	    int height = gp.tileSize * 5;
+	    
+	    // Draw the background 
+	    drawSubWindow(x, y, width, height);
+	    
+
+	    g2.setColor(Color.white);
+	    g2.setFont(g2.getFont().deriveFont(32F));
+
+	    // Title
+	    String text = "Izvēlies lomu:";
+	    g2.drawString(text, x + gp.tileSize, y + gp.tileSize);
+
+
+	    text = "Darbinieks";
+	    int textX = x + gp.tileSize * 2;
+	    int textY = (int) (y + gp.tileSize * 2.5);
+	    g2.drawString(text, textX, textY);
+	    if(commandNum == 0) {
+	        g2.drawString(">", textX - 25, textY);
+	    }
+
+
+	    text = "Klients";
+	    textY += gp.tileSize;
+	    g2.drawString(text, textX, textY);
+	    if(commandNum == 1) {
+	        g2.drawString(">", textX - 25, textY);
+	    }
+	}
+	
+	public void drawSubWindow(int x, int y, int width, int height) {
+	    
+	    Color c = new Color(0, 0, 0, 210);
+	    g2.setColor(c);
+	    g2.fillRoundRect(x, y, width, height, 35, 35);
+	    
+
+	    g2.setColor(Color.white);
+	    g2.setStroke(new java.awt.BasicStroke(5));
+	    g2.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
 	}
 
 	public void drawPauseScreen() {
