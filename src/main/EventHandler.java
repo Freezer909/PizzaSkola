@@ -4,7 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import Pica.PasutisanasFrame;
-import Pica.PizerijasFrame;
+import Pica.PicerijaKlientuFrame;
+import Pica.PizerijasDarbiniekuFrame;
 
 public class EventHandler {
 
@@ -79,10 +80,10 @@ public class EventHandler {
 			    teleport(2, 10, 18);
 			}
 			//darbinieka dators
-			if(hit(2, 15, 8, "up") == true) { 
+			if(hit(2, 18, 14, "up") == true) { 
 			    if(gp.keyH.ePressed) {
 			        if(gp.player.Darbs == 1) {
-			            new PizerijasFrame(); 
+			            PizerijasDarbiniekuFrame.raditDarbiniekaPaneli();
 			            gp.keyH.ePressed = false; 
 			        }
 			    }
@@ -94,6 +95,14 @@ public class EventHandler {
 			        PasutisanasFrame.pasutisanasPanelis(); 
 			        gp.keyH.ePressed = false;
 			    }
+			}
+			
+			// Uz vietas pasūtīšana
+			if(hit(0, 18, 17, "any") == true) { 
+				if(gp.keyH.ePressed) {
+					PicerijaKlientuFrame.pasutisanasPanelis(); 
+					gp.keyH.ePressed = false;
+				}
 			}
 		}
 	}

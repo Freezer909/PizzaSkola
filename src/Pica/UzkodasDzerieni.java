@@ -1,0 +1,24 @@
+package Pica;
+
+public class UzkodasDzerieni {
+    private String nosaukums;
+    private double cena;
+
+    public UzkodasDzerieni(String nosaukums, double cena) {
+        this.nosaukums = nosaukums;
+        this.cena = cena;
+    }
+
+    public String getNosaukums() {
+    	return nosaukums; 
+    	}
+    
+    public double getCena() {
+    	return cena; 
+    	}
+    
+    @Override
+    public String toString() {
+        return nosaukums + " (" + String.format("%.2f", cena) + "€)";
+    }
+}

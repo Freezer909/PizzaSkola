@@ -77,7 +77,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void setupGame() {
 		
-		playMusic(0);
+		
 		gameState = titleState;
 		
 		tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
