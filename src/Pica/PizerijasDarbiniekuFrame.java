@@ -5,7 +5,15 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import javax.swing.*;
+import java.util.Random;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 import entity.Player;
 
 public class PizerijasDarbiniekuFrame {
@@ -175,6 +183,8 @@ public class PizerijasDarbiniekuFrame {
     }
 
     private static JPanel izveidotDarbaPaneli() {
+        Random rand = new Random();
+        
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setBackground(Color.WHITE);
@@ -190,13 +200,27 @@ public class PizerijasDarbiniekuFrame {
 
         JButton btnStradat = new JButton("STRĀDĀT (+5.00 €)");
         btnStradat.setFont(new Font("Arial", Font.BOLD, 20));
+
         btnStradat.setBounds(50, 120, 400, 100);
         btnStradat.setBackground(new Color(46, 204, 113));
         btnStradat.setForeground(Color.WHITE);
         btnStradat.setFocusable(false);
 
         btnStradat.addActionListener(e -> {
-            Player.Nauda += 5.0;
+        	
+            Player.Nauda += 1.0;
+
+            int maxX = panel.getWidth() - btnStradat.getWidth();
+            int maxY = panel.getHeight() - btnStradat.getHeight();
+
+            if (maxX > 0 && maxY > 0) {
+                int jaunsX = rand.nextInt(maxX);
+                int jaunsY = rand.nextInt(maxY);
+                
+                btnStradat.setLocation(jaunsX, jaunsY);
+            }
+
+            panel.repaint();
         });
 
         panel.add(btnStradat);
