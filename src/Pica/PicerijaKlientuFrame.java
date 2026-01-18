@@ -1,135 +1,208 @@
 package Pica;
 
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import entity.Player;
 
 public class PicerijaKlientuFrame {
-	
-	public static JFrame galvenaisLogs;
-	
-	public static void pasutisanasPanelis() {
-		galvenaisLogs = new JFrame("Pasūtījums uz vietas");
-		galvenaisLogs.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		galvenaisLogs.setSize(1300, 800);
-		galvenaisLogs.setLocationRelativeTo(null);
-		galvenaisLogs.setLayout(null); 
-		galvenaisLogs.setResizable(false);
-		galvenaisLogs.setAlwaysOnTop(true);
+    
+    public static JFrame galvenaisLogs;
+    
+    public static void KlientaPanelis() {
+        galvenaisLogs = new JFrame("Klientu Kase");
+        galvenaisLogs.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        galvenaisLogs.setResizable(false);
+        galvenaisLogs.setSize(1300, 800);
+        galvenaisLogs.setLocationRelativeTo(null); 
+        galvenaisLogs.setAlwaysOnTop(true); 
 
-		Picerija.DefaultDati();
-		
-		JLabel virsraksts = new JLabel("JAUNS PASŪTĪJUMS");
-		virsraksts.setFont(new Font("Arial", Font.BOLD, 22));
-		virsraksts.setBounds(50, 20, 300, 40);
-		galvenaisLogs.add(virsraksts);
+        galvenaisLogs.setLayout(new BorderLayout());
 
-		JLabel lblPica = new JLabel("Izvēlieties picu:");
-		lblPica.setBounds(50, 80, 150, 25);
-		galvenaisLogs.add(lblPica);
-		
-		JComboBox<Pica> comboPica = new JComboBox<>(Picerija.picasSaraksts.toArray(new Pica[0]));
-		comboPica.setBounds(200, 80, 300, 30);
-		galvenaisLogs.add(comboPica);
+        CardLayout cl = new CardLayout();
+        JPanel main = new JPanel(cl);
 
-		JLabel lblIzmers = new JLabel("Picas izmērs:");
-		lblIzmers.setBounds(50, 130, 150, 25);
-		galvenaisLogs.add(lblIzmers);
-		
-		JComboBox<String> comboIzmers = new JComboBox<>(Picerija.picasIzmeri);
-		comboIzmers.setBounds(200, 130, 150, 30);
-		galvenaisLogs.add(comboIzmers);
+        JPanel kasesPanel = KasesPanelis();
+        main.add(kasesPanel, "KASE");
 
-		JLabel lblPiedevas = new JLabel("Papildus piedevas (0.80€):");
-		lblPiedevas.setFont(new Font("Arial", Font.BOLD, 14));
-		lblPiedevas.setBounds(50, 180, 250, 25);
-		galvenaisLogs.add(lblPiedevas);
+        JPanel izv = IzvelesPanelis(cl, main);
+        
+        galvenaisLogs.add(izv, BorderLayout.WEST);
+        galvenaisLogs.add(main, BorderLayout.CENTER);
+        
+        galvenaisLogs.setVisible(true);
+    }
+    
+    private static JPanel IzvelesPanelis(CardLayout cl, JPanel main) {
+        JPanel izv = new JPanel();
+        izv.setLayout(null); 
+        izv.setPreferredSize(new Dimension(200, 800));
+        izv.setBackground(Color.DARK_GRAY);
+        
+        JButton kase = new JButton("Jauns pasūtījums");
+        kase.setBounds(20, 350, 160, 50);
+        kase.setFocusable(false);
+        kase.addActionListener(e -> cl.show(main, "KASE"));
+        
+        izv.add(kase);
+        return izv;
+    }
 
-		ArrayList<JCheckBox> piedevuKastes = new ArrayList<>();
-		int y = 210;
-		for (String piedeva : Picerija.visasPiedevas) {
-			JCheckBox cb = new JCheckBox(piedeva);
-			cb.setBounds(50, y, 200, 20);
-			galvenaisLogs.add(cb);
-			piedevuKastes.add(cb);
-			y += 30;
-		}
+    private static JPanel KasesPanelis() {
+        Picerija.DefaultDati();
+        
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(Color.WHITE);
 
-		JCheckBox chkMalina = new JCheckBox("Sieraina maliņa (+1.50€)");
-		chkMalina.setBounds(300, 210, 200, 25);
-		galvenaisLogs.add(chkMalina);
+        // Pica
+        JLabel picaLbl = new JLabel("Izvēlieties picu:");
+        picaLbl.setBounds(50, 30, 150, 25);
+        panel.add(picaLbl);
 
-		JLabel lblDzerieni = new JLabel("Dzērieni:");
-		lblDzerieni.setBounds(300, 280, 100, 25);
-		galvenaisLogs.add(lblDzerieni);
+        JComboBox<Pica> picasCombo = new JComboBox<>(Picerija.picasSaraksts.toArray(new Pica[0]));
+        picasCombo.setBounds(50, 60, 250, 30);
+        panel.add(picasCombo);
+        
+        JLabel izmersLbl = new JLabel("Izmērs:");
+        izmersLbl.setBounds(320, 30, 100, 25);
+        panel.add(izmersLbl);
 
-		JComboBox<Uzkodas> comboDzerieni = new JComboBox<>(Picerija.dzerieni.toArray(new Uzkodas[0]));
-		comboDzerieni.setBounds(300, 310, 200, 30);
-		galvenaisLogs.add(comboDzerieni);
-		
-		JLabel cenaLbl = new JLabel("Kopā apmaksai: 0.00€");
-		cenaLbl.setFont(new Font("Arial", Font.BOLD, 24));
-		cenaLbl.setForeground(new Color(44, 62, 80));
-		cenaLbl.setBounds(50, 520, 400, 40);
-		galvenaisLogs.add(cenaLbl);
+        JComboBox<String> izmeruCombo = new JComboBox<>(Picerija.picasIzmeri);
+        izmeruCombo.setBounds(320, 60, 150, 30);
+        panel.add(izmeruCombo);
+        
+        // Piedevas
+        JLabel piedevuLbl = new JLabel("Papildus piedevas (0.80€/gab):");
+        piedevuLbl.setBounds(50, 110, 250, 25);
+        panel.add(piedevuLbl);
 
-		JButton btnPirkt = new JButton("Pirkt");
-		btnPirkt.setBounds(50, 580, 500, 50);
-		btnPirkt.setBackground(new Color(39, 174, 96));
-		btnPirkt.setForeground(Color.WHITE);
-		btnPirkt.setFont(new Font("Arial", Font.BOLD, 16));
-		galvenaisLogs.add(btnPirkt);
+        ArrayList<JCheckBox> piedevuKastes = new ArrayList<>();
+        int yPos = 140;
 
-		ActionListener cenuAtjaunot = e -> {
-			Pica izveleta = (Pica) comboPica.getSelectedItem();
-			if (izveleta != null) {
-				Pica kalk = new Pica(izveleta.getNosaukums(), izveleta.getPamataCena());
-				kalk.setIzmers((String) comboIzmers.getSelectedItem());
-				kalk.setSierainaMalina(chkMalina.isSelected());
-				for (JCheckBox cb : piedevuKastes) {
-					if (cb.isSelected()) kalk.pievienotPiedevu(cb.getText());
-				}
-				double galaCena = kalk.aprekinatGalaCenu();
-				cenaLbl.setText("Kopā apmaksai: " + String.format("%.2f", galaCena) + "€");
-			}
-		};
+        for (String piedeva : Picerija.papildusPiedevas) {
+            JCheckBox cb = new JCheckBox(piedeva);
+            cb.setBounds(50, yPos, 150, 20);
+            cb.setBackground(Color.WHITE);
+            panel.add(cb);
+            piedevuKastes.add(cb);
+            yPos += 25;
+        }
 
-		comboPica.addActionListener(cenuAtjaunot);
-		comboIzmers.addActionListener(cenuAtjaunot);
-		chkMalina.addActionListener(cenuAtjaunot);
-		for (JCheckBox cb : piedevuKastes) cb.addActionListener(cenuAtjaunot);
-		
-		cenuAtjaunot.actionPerformed(null);
+        // Mērces, Uzkodas, Dzērieni
+        JLabel merceLbl = new JLabel("Mērce:");
+        merceLbl.setBounds(320, 110, 100, 25);
+        panel.add(merceLbl);
+        JComboBox<String> mercesCombo = new JComboBox<>(Picerija.visasMerces.toArray(new String[0]));
+        mercesCombo.setBounds(320, 140, 150, 30);
+        panel.add(mercesCombo);
+        
+        JLabel uzkodasLbl = new JLabel("Uzkodas:");
+        uzkodasLbl.setBounds(550, 30, 100, 25);
+        panel.add(uzkodasLbl);
+        JComboBox<Uzkodas> uzkodasCombo = new JComboBox<>(Picerija.Uzkodas.toArray(new Uzkodas[0]));
+        uzkodasCombo.setBounds(550, 60, 150, 30);
+        panel.add(uzkodasCombo);
+        
+        JLabel dzerieniLbl = new JLabel("Dzērieni:");
+        dzerieniLbl.setBounds(750, 30, 100, 25);
+        panel.add(dzerieniLbl);
+        JComboBox<Dzerieni> dzerieniCombo = new JComboBox<>(Picerija.dzerieni.toArray(new Dzerieni[0]));
+        dzerieniCombo.setBounds(750, 60, 150, 30);
+        panel.add(dzerieniCombo);
 
-		btnPirkt.addActionListener(e -> {
-			try (PrintWriter pw = new PrintWriter(new FileWriter("Pasutijumi.txt", true))) {
-				pw.println(" PICA UZ VIETAS ");
-				pw.println("PICA: " + comboPica.getSelectedItem() + " [" + comboIzmers.getSelectedItem() + "]");
-				
-				String piedevas = "";
-				for(JCheckBox cb : piedevuKastes) if(cb.isSelected()) piedevas += cb.getText() + " ";
-				pw.println("PIEDEVAS: " + (piedevas.isEmpty() ? "Nav" : piedevas));
-				
-				pw.println("SUMMA: " + cenaLbl.getText().replace("Kopā apmaksai: ", ""));
-				pw.println("----------------------\n");
+        JCheckBox chkMalina = new JCheckBox("Sieraina maliņa (+1.50€)");
+        chkMalina.setBounds(320, 190, 200, 25);
+        chkMalina.setBackground(Color.WHITE);
+        panel.add(chkMalina);
 
-				JOptionPane.showMessageDialog(galvenaisLogs, "Pasūtījums pieņemts! Pica būs gatava drīz.");
-			} catch (IOException ex) {
-				JOptionPane.showMessageDialog(galvenaisLogs, "Kļūda kases sistēmā!");
-			}
-		});
+        JLabel kopejaCenaLbl = new JLabel("Kopā: 0.00€");
+        kopejaCenaLbl.setFont(new Font("Arial", Font.BOLD, 18));
+        kopejaCenaLbl.setBounds(720, 480, 250, 45); 
+        panel.add(kopejaCenaLbl);
+        
+        // calc
+        ActionListener cenasAtjaunotajs = e -> {
+            double kopejaSumma = 0;
+            Pica sablons = (Pica) picasCombo.getSelectedItem();
+            
+            if (sablons != null) {
+ 
+                Pica kalkulators = new Pica(sablons.getNosaukums(), sablons.getPamataCena(), sablons.getPamataPiedevas());
+                kalkulators.setIzmers((String) izmeruCombo.getSelectedItem());
+                kalkulators.setSierainaMalina(chkMalina.isSelected());
+                
+                for (JCheckBox cb : piedevuKastes) {
+                    if (cb.isSelected()) kalkulators.pievienotPapildusPiedevu(cb.getText());
+                }
+                kopejaSumma += kalkulators.aprekinatGalaCenu();
+            }
 
-		galvenaisLogs.setVisible(true);
-	}
+            Uzkodas u = (Uzkodas) uzkodasCombo.getSelectedItem();
+            if (u != null) kopejaSumma += u.getCena();
+
+            Dzerieni d = (Dzerieni) dzerieniCombo.getSelectedItem();
+            if (d != null) kopejaSumma += d.getCena();
+            
+            kopejaCenaLbl.setText("Kopā: " + String.format("%.2f", kopejaSumma) + "€");
+        };
+
+        picasCombo.addActionListener(cenasAtjaunotajs);
+        izmeruCombo.addActionListener(cenasAtjaunotajs);
+        chkMalina.addActionListener(cenasAtjaunotajs);
+        uzkodasCombo.addActionListener(cenasAtjaunotajs);
+        dzerieniCombo.addActionListener(cenasAtjaunotajs);
+        for (JCheckBox cb : piedevuKastes) cb.addActionListener(cenasAtjaunotajs);
+    
+        cenasAtjaunotajs.actionPerformed(null);
+
+        // pirkt
+        JButton pirktPoga = new JButton("PIRKT");
+        pirktPoga.setBounds(300, 500, 400, 45);
+        pirktPoga.setBackground(new Color(39, 174, 96));
+        pirktPoga.setForeground(Color.WHITE);
+        pirktPoga.setFont(new Font("Arial", Font.BOLD, 16));
+        panel.add(pirktPoga);
+
+        pirktPoga.addActionListener(e -> {
+            double summa = Double.parseDouble(kopejaCenaLbl.getText().replace("Kopā: ", "").replace("€", "").replace(",", "."));
+            if (Player.Nauda < summa) {
+                JOptionPane.showMessageDialog(galvenaisLogs, "Nepietiek naudas!", "Kļūda", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            Player.Nauda -= summa;
+
+            Pica sablons = (Pica) picasCombo.getSelectedItem();
+            Pica galaPica = new Pica(sablons.getNosaukums(), sablons.getPamataCena(), sablons.getPamataPiedevas());
+            galaPica.setIzmers((String) izmeruCombo.getSelectedItem());
+            for (JCheckBox cb : piedevuKastes) {
+                if(cb.isSelected()) galaPica.pievienotPapildusPiedevu(cb.getText());
+            }
+
+            try (PrintWriter pw = new PrintWriter(new FileWriter("Pasutijumi.txt", true))) {
+                pw.println("PASŪTĪJUMS UZ VIETAS");
+                pw.println("Pica: " + galaPica.toString());
+                pw.println("Sastāvs: " + galaPica.getSastavs());
+                pw.println("Uzkoda: " + uzkodasCombo.getSelectedItem());
+                pw.println("Dzēriens: " + dzerieniCombo.getSelectedItem());
+                pw.println("SUMMA: " + String.format("%.2f", summa) + "€");
+                pw.println("------------------------------------------\n");
+                
+                JOptionPane.showMessageDialog(galvenaisLogs, "Pica veiksmīgi nopirkta!");
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(galvenaisLogs, "Kļūda saglabājot failā!");
+            }
+        });
+
+        return panel;
+    }
 }

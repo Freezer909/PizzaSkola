@@ -1,17 +1,22 @@
 package Pica;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Pica {
     private String nosaukums;
     private double pamataCena;
     private String izmers; 
-    private boolean sierainaMalina;
-    private ArrayList<String> piedevas = new ArrayList<>();
+    private boolean sieraMalina;
+    
+    private String[] pamataPiedevas; 
+    
+    private ArrayList<String> papildusPiedevas = new ArrayList<>();
 
-    public Pica(String nosaukums, double pamataCena) {
+    public Pica(String nosaukums, double pamataCena, String[] pamataPiedevas) {
         this.nosaukums = nosaukums;
         this.pamataCena = pamataCena;
+        this.pamataPiedevas = pamataPiedevas; 
         this.izmers = "Vidējā";
     }
 
@@ -21,37 +26,32 @@ public class Pica {
         if (izmers.equals("Lielā")) galaCena += 2.0;
         if (izmers.equals("Mazā")) galaCena -= 1.5;
         
-        galaCena += piedevas.size() * 0.80;
+        galaCena += papildusPiedevas.size() * 0.80;
 
-        if (sierainaMalina) galaCena += 1.50;
+        if (sieraMalina) galaCena += 1.50;
         
         return galaCena;
     }
 
+    public void pievienotPapildusPiedevu(String piedeva) {
+        papildusPiedevas.add(piedeva);
+    }
+    
+    public String[] getPamataPiedevas() { return pamataPiedevas; }
+    public String getNosaukums() { return nosaukums; }
+    public double getPamataCena() { return pamataCena; }
+    public void setIzmers(String izmers) { this.izmers = izmers; }
+    public void setSierainaMalina(boolean ir) { this.sieraMalina = ir; }
+    
+    public String getSastavs() {
 
-    public void setIzmers(String izmers) { 
-    	this.izmers = izmers; 
+        String baze = Arrays.toString(pamataPiedevas);
+        String papildus = papildusPiedevas.isEmpty() ? "" : " + Papildus: " + papildusPiedevas.toString();
+        return baze + papildus;
     }
-    
-    public void setSierainaMalina(boolean ir) {
-    	this.sierainaMalina = ir; 
-    }
-    
-    public String getNosaukums() {
-    	return nosaukums;
-    }
-    
-    public double getPamataCena() {
-    	return pamataCena;
-    }
-    
-    public void pievienotPiedevu(String piedeva) {
-    	this.piedevas.add(piedeva); 
-    }
-    
+
     @Override
     public String toString() {
         return nosaukums + " [" + izmers + "]";
     }
-
 }

@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import entity.Player;
 
 import javax.imageio.ImageIO;
 
@@ -21,7 +22,6 @@ public class UI {
 		
 		arial_40 = new Font("Arial", Font.PLAIN, 40);
 		try {
-	        // Make sure the path matches where you put the file in your project (e.g., res folder)
 	        titleImage = ImageIO.read(getClass().getResourceAsStream("/Images/TitleScreenPlaceHolder.png"));
 	    } catch (IOException e) {
 	        e.printStackTrace();
@@ -40,7 +40,7 @@ public class UI {
 		}
 		//PLAy STATE
 		if(gp.gameState == gp.playState) {
-			//YEs yes play state
+			g2.drawString("NAUDA = "+ Player.Nauda+"$", 30, 50);
 			if(gp.keyH.checkDrawTime == true) {
 	            g2.setFont(arial_40.deriveFont(20F)); // Smaller font for debug
 	            g2.setColor(Color.white);
@@ -53,6 +53,8 @@ public class UI {
 	            g2.drawString("WorldY: " + gp.player.worldY, x, y + lineHeight);
 	            g2.drawString("Col: " + (gp.player.worldX / gp.tileSize), x, y + lineHeight * 2);
 	            g2.drawString("Row: " + (gp.player.worldY / gp.tileSize), x, y + lineHeight * 3);
+	            
+	            
 	        }
 			
 		}
@@ -83,7 +85,6 @@ public class UI {
 	    int x = getXforCenteredText(text);
 	    int y = gp.tileSize * 2;
 
-	    // Shadow for better readability (Optional)
 	    g2.setColor(Color.black);
 	    g2.drawString(text, x + 5, y + 5);
 

@@ -1,166 +1,206 @@
 package Pica;
 
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTextField;
+import javax.swing.*;
+import entity.Player;
 
 public class PizerijasDarbiniekuFrame {
 
-	public static void raditDarbiniekaPaneli() {
-		JFrame DarbiniekuPanelis = new JFrame("Darbinieku Panelis: Piedāvājuma Rediģēšana");
-		DarbiniekuPanelis.setSize(1300, 800);
-		DarbiniekuPanelis.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		DarbiniekuPanelis.setLocationRelativeTo(null);
+    public static void raditDarbiniekaPaneli() {
+        JFrame darbiniekuLogs = new JFrame("Darbinieku Panelis");
+        darbiniekuLogs.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        darbiniekuLogs.setSize(1300, 800);
+        darbiniekuLogs.setLocationRelativeTo(null);
+        darbiniekuLogs.setLayout(new BorderLayout());
 
+        CardLayout cl = new CardLayout();
+        JPanel mainContent = new JPanel(cl);
 
-		JPanel saturaPanelis = new JPanel();
-		saturaPanelis.setLayout(null);
-		saturaPanelis.setPreferredSize(new Dimension(500, 850)); 
+        JPanel redigetPanel = izveidotRedigesanasPaneli();
+        JPanel darbaPanel = izveidotDarbaPaneli();
 
-		
-		JLabel lblPicaV = new JLabel("PIEVIENOT PICU");
-		lblPicaV.setFont(new Font("Arial", Font.BOLD, 14));
-		lblPicaV.setBounds(30, 20, 200, 25);
-		saturaPanelis.add(lblPicaV);
+        mainContent.add(redigetPanel, "REDIGET");
+        mainContent.add(darbaPanel, "DARBS");
 
-		JTextField txtPicasNos = new JTextField("");
-		txtPicasNos.setBounds(30, 50, 150, 25);
-		saturaPanelis.add(txtPicasNos);
+        JPanel izvelne = izveidotIzvelnesPaneli(cl, mainContent);
 
-		JTextField txtPicasCena = new JTextField("");
-		txtPicasCena.setBounds(190, 50, 80, 25);
-		saturaPanelis.add(txtPicasCena);
+        darbiniekuLogs.add(izvelne, BorderLayout.WEST);
+        darbiniekuLogs.add(mainContent, BorderLayout.CENTER);
 
-		JButton btnPievienotPicu = new JButton("Pievienot");
-		btnPievienotPicu.setBounds(280, 50, 120, 25);
-		saturaPanelis.add(btnPievienotPicu);
+        darbiniekuLogs.setVisible(true);
+    }
 
+    private static JPanel izveidotIzvelnesPaneli(CardLayout cl, JPanel main) {
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setPreferredSize(new Dimension(200, 800));
+        panel.setBackground(Color.DARK_GRAY);
 
-		JSeparator sep1 = new JSeparator();
-		sep1.setBounds(20, 100, 480, 2);
-		saturaPanelis.add(sep1);
+        JButton btnRediget = new JButton("Rediģēt ēdienkarti");
+        JButton btnDarbs = new JButton("Strādāt");
 
-		JLabel lblPiedevaV = new JLabel("PIEVIENOT PIEDEVU VAI MĒRCI");
-		lblPiedevaV.setFont(new Font("Arial", Font.BOLD, 14));
-		lblPiedevaV.setBounds(30, 110, 300, 25);
-		saturaPanelis.add(lblPiedevaV);
+        btnRediget.setBounds(20, 280, 160, 50);
+        btnDarbs.setBounds(20, 350, 160, 50);
 
-		JTextField txtPiedeva = new JTextField("");
-		txtPiedeva.setBounds(30, 140, 240, 25);
-		saturaPanelis.add(txtPiedeva);
+        btnRediget.setFocusable(false);
+        btnDarbs.setFocusable(false);
 
-		JButton btnPievienotPiedevu = new JButton("Pievienot Piedevu");
-		btnPievienotPiedevu.setBounds(280, 140, 150, 25);
-		saturaPanelis.add(btnPievienotPiedevu);
+        btnRediget.addActionListener(e -> cl.show(main, "REDIGET"));
+        btnDarbs.addActionListener(e -> cl.show(main, "DARBS"));
 
-		JTextField txtMerce = new JTextField("");
-		txtMerce.setBounds(30, 175, 240, 25);
-		saturaPanelis.add(txtMerce);
+        panel.add(btnRediget);
+        panel.add(btnDarbs);
 
-		JButton btnPievienotMerci = new JButton("Pievienot Mērci");
-		btnPievienotMerci.setBounds(280, 175, 150, 25);
-		saturaPanelis.add(btnPievienotMerci);
+        return panel;
+    }
 
+    private static JPanel izveidotRedigesanasPaneli() {
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(new Color(240, 240, 240));
 
-		JSeparator sep2 = new JSeparator();
-		sep2.setBounds(20, 220, 480, 2);
-		saturaPanelis.add(sep2);
+        JLabel virsraksts = new JLabel("ĒDIENKARTES REDIĢĒŠANA");
+        virsraksts.setFont(new Font("Arial", Font.BOLD, 22));
+        virsraksts.setBounds(50, 30, 400, 40);
+        panel.add(virsraksts);
 
-		JLabel lblEdiensV = new JLabel("PIEVIENOT PAPILDU ĒDIENU (Uzkodas)");
-		lblEdiensV.setFont(new Font("Arial", Font.BOLD, 14));
-		lblEdiensV.setBounds(30, 230, 300, 25);
-		saturaPanelis.add(lblEdiensV);
+        // --- Picas pievienošana ---
+        JLabel lblPicaVirsraksts = new JLabel("PIEVIENOT PICU");
+        lblPicaVirsraksts.setFont(new Font("Arial", Font.BOLD, 14));
+        lblPicaVirsraksts.setBounds(50, 90, 200, 25);
+        panel.add(lblPicaVirsraksts);
 
-		JTextField txtEdienaNos = new JTextField("");
-		txtEdienaNos.setBounds(30, 260, 150, 25);
-		saturaPanelis.add(txtEdienaNos);
+        JLabel lblNosaukums = new JLabel("Nosaukums:");
+        lblNosaukums.setBounds(50, 120, 100, 25);
+        panel.add(lblNosaukums);
 
-		JTextField txtEdienaCena = new JTextField("");
-		txtEdienaCena.setBounds(190, 260, 80, 25);
-		saturaPanelis.add(txtEdienaCena);
+        JTextField txtPicasNos = new JTextField();
+        txtPicasNos.setBounds(50, 145, 200, 30);
+        panel.add(txtPicasNos);
 
-		JButton btnPievienotEdienu = new JButton("Pievienot");
-		btnPievienotEdienu.setBounds(280, 260, 120, 25);
-		saturaPanelis.add(btnPievienotEdienu);
+        JLabel lblCena = new JLabel("Cena (€):");
+        lblCena.setBounds(260, 120, 80, 25);
+        panel.add(lblCena);
 
+        JTextField txtPicasCena = new JTextField();
+        txtPicasCena.setBounds(260, 145, 80, 30);
+        panel.add(txtPicasCena);
 
-		JSeparator sep3 = new JSeparator();
-		sep3.setBounds(20, 310, 480, 2);
-		saturaPanelis.add(sep3);
+        JLabel lblSastavs = new JLabel("Sastāvdaļas (piem. Siers, Šķiņķis...):");
+        lblSastavs.setBounds(50, 185, 250, 25);
+        panel.add(lblSastavs);
 
-		JLabel lblDzeriensV = new JLabel("PIEVIENOT DZĒRIENU");
-		lblDzeriensV.setFont(new Font("Arial", Font.BOLD, 14));
-		lblDzeriensV.setBounds(30, 320, 300, 25);
-		saturaPanelis.add(lblDzeriensV);
+        JTextField txtPicasSastavs = new JTextField();
+        txtPicasSastavs.setBounds(50, 210, 290, 30);
+        panel.add(txtPicasSastavs);
 
-		JTextField txtDzerienaNos = new JTextField("");
-		txtDzerienaNos.setBounds(30, 350, 150, 25);
-		saturaPanelis.add(txtDzerienaNos);
+        JButton btnPievienotPicu = new JButton("Pievienot");
+        btnPievienotPicu.setBounds(360, 145, 120, 95);
+        btnPievienotPicu.setBackground(new Color(52, 152, 219));
+        btnPievienotPicu.setForeground(Color.WHITE);
+        btnPievienotPicu.addActionListener(e -> {
+            try {
+                String nos = txtPicasNos.getText();
+                double cena = Double.parseDouble(txtPicasCena.getText());
+                String[] sastavs = txtPicasSastavs.getText().split(",");
+                for(int i=0; i<sastavs.length; i++) sastavs[i] = sastavs[i].trim();
+                Picerija.picasSaraksts.add(new Pica(nos, cena, sastavs));
+                JOptionPane.showMessageDialog(null, "Pica '" + nos + "' pievienota!");
+                txtPicasNos.setText(""); txtPicasCena.setText(""); txtPicasSastavs.setText("");
+            } catch (Exception ex) { JOptionPane.showMessageDialog(null, "Kļūda picas datos!"); }
+        });
+        panel.add(btnPievienotPicu);
 
-		JTextField txtDzerienaCena = new JTextField("");
-		txtDzerienaCena.setBounds(190, 350, 80, 25);
-		saturaPanelis.add(txtDzerienaCena);
+        // --- Piedevas ---
+        JLabel lblPiedevaVirsraksts = new JLabel("PIEVIENOT PAPILDU PIEDEVU");
+        lblPiedevaVirsraksts.setFont(new Font("Arial", Font.BOLD, 14));
+        lblPiedevaVirsraksts.setBounds(50, 280, 300, 25);
+        panel.add(lblPiedevaVirsraksts);
 
-		JButton btnPievienotDzerienu = new JButton("Pievienot");
-		btnPievienotDzerienu.setBounds(280, 350, 120, 25);
-		saturaPanelis.add(btnPievienotDzerienu);
+        JLabel lblPiedevaNos = new JLabel("Piedevas nosaukums:");
+        lblPiedevaNos.setBounds(50, 305, 200, 25);
+        panel.add(lblPiedevaNos);
 
+        JTextField txtPiedeva = new JTextField();
+        txtPiedeva.setBounds(50, 330, 290, 30);
+        panel.add(txtPiedeva);
 
-		btnPievienotPicu.addActionListener(e -> {
-			try {
-				String nos = txtPicasNos.getText();
-				double cena = Double.parseDouble(txtPicasCena.getText());
-				Picerija.picasSaraksts.add(new Pica(nos, cena));
-				JOptionPane.showMessageDialog(DarbiniekuPanelis, "Pica '" + nos + "' pievienota!");
-			} catch (Exception ex) { 
-				JOptionPane.showMessageDialog(DarbiniekuPanelis, "Kļūda picas cenas formātā!"); 
-			}
-		});
+        JButton btnPiedeva = new JButton("Pievienot");
+        btnPiedeva.setBounds(360, 330, 120, 30);
+        btnPiedeva.addActionListener(e -> {
+            Picerija.papildusPiedevas.add(txtPiedeva.getText());
+            JOptionPane.showMessageDialog(null, "Piedeva pievienota!");
+            txtPiedeva.setText("");
+        });
+        panel.add(btnPiedeva);
 
-		btnPievienotPiedevu.addActionListener(e -> {
-			String piedeva = txtPiedeva.getText();
+        // --- Uzkodas ---
+        JLabel lblUzkodaVirsraksts = new JLabel("PIEVIENOT UZKODU");
+        lblUzkodaVirsraksts.setFont(new Font("Arial", Font.BOLD, 14));
+        lblUzkodaVirsraksts.setBounds(50, 400, 200, 25);
+        panel.add(lblUzkodaVirsraksts);
 
-			Picerija.visasPiedevas.add(piedeva);
-			JOptionPane.showMessageDialog(DarbiniekuPanelis, "Piedeva '" + piedeva + "' pievienota!");
-		});
+        JLabel lblUzkodaNos = new JLabel("Nosaukums:");
+        lblUzkodaNos.setBounds(50, 425, 100, 25);
+        panel.add(lblUzkodaNos);
 
-		btnPievienotMerci.addActionListener(e -> {
-			String merce = txtMerce.getText();
-			Picerija.visasMerces.add(merce);
-			JOptionPane.showMessageDialog(DarbiniekuPanelis, "Mērce '" + merce + "' pievienota!");
-		});
+        JTextField txtUzkodaNos = new JTextField();
+        txtUzkodaNos.setBounds(50, 450, 200, 30);
+        panel.add(txtUzkodaNos);
 
-		btnPievienotEdienu.addActionListener(e -> {
-			try {
-				String nos = txtEdienaNos.getText();
-				double cena = Double.parseDouble(txtEdienaCena.getText());
-				Picerija.Uzkodas.add(new Uzkodas(nos, cena));
-				JOptionPane.showMessageDialog(DarbiniekuPanelis, "Uzkoda '" + nos + "' pievienota!");
-			} catch (Exception ex) { 
-				JOptionPane.showMessageDialog(DarbiniekuPanelis, "Kļūda uzkodas cenas formātā!"); 
-			}
-		});
+        JLabel lblUzkodaCena = new JLabel("Cena (€):");
+        lblUzkodaCena.setBounds(260, 425, 80, 25);
+        panel.add(lblUzkodaCena);
 
-		btnPievienotDzerienu.addActionListener(e -> {
-			try {
-				String nos = txtDzerienaNos.getText();
-				double cena = Double.parseDouble(txtDzerienaCena.getText());
-				Picerija.dzerieni.add(new Dzerieni(nos, cena));
-				JOptionPane.showMessageDialog(DarbiniekuPanelis, "Dzēriens '" + nos + "' pievienots!");
-			} catch (Exception ex) { 
-				JOptionPane.showMessageDialog(DarbiniekuPanelis, "Kļūda dzēriena cenas formātā!"); 
-			}
-		});
+        JTextField txtUzkodaCena = new JTextField();
+        txtUzkodaCena.setBounds(260, 450, 80, 30);
+        panel.add(txtUzkodaCena);
 
-		JScrollPane scrollPane = new JScrollPane(saturaPanelis);
-		DarbiniekuPanelis.add(scrollPane);
-		DarbiniekuPanelis.setVisible(true);
-	}
+        JButton btnUzkoda = new JButton("Pievienot");
+        btnUzkoda.setBounds(360, 450, 120, 30);
+        btnUzkoda.addActionListener(e -> {
+            try {
+                Picerija.Uzkodas.add(new Uzkodas(txtUzkodaNos.getText(), Double.parseDouble(txtUzkodaCena.getText())));
+                JOptionPane.showMessageDialog(null, "Uzkoda pievienota!");
+                txtUzkodaNos.setText(""); txtUzkodaCena.setText("");
+            } catch (Exception ex) { JOptionPane.showMessageDialog(null, "Kļūda!"); }
+        });
+        panel.add(btnUzkoda);
+
+        return panel;
+    }
+
+    private static JPanel izveidotDarbaPaneli() {
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(Color.WHITE);
+
+        JLabel virsraksts = new JLabel("DARBA ZONA");
+        virsraksts.setFont(new Font("Arial", Font.BOLD, 22));
+        virsraksts.setBounds(50, 30, 200, 40);
+        panel.add(virsraksts);
+
+        JLabel apraksts = new JLabel("Spiediet pogu, lai strādātu un pelnītu naudu:");
+        apraksts.setBounds(50, 80, 400, 25);
+        panel.add(apraksts);
+
+        JButton btnStradat = new JButton("STRĀDĀT (+5.00 €)");
+        btnStradat.setFont(new Font("Arial", Font.BOLD, 20));
+        btnStradat.setBounds(50, 120, 400, 100);
+        btnStradat.setBackground(new Color(46, 204, 113));
+        btnStradat.setForeground(Color.WHITE);
+        btnStradat.setFocusable(false);
+
+        btnStradat.addActionListener(e -> {
+            Player.Nauda += 5.0;
+        });
+
+        panel.add(btnStradat);
+
+        return panel;
+    }
 }

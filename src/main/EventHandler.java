@@ -100,7 +100,7 @@ public class EventHandler {
 			// Uz vietas pasūtīšana
 			if(hit(0, 18, 17, "any") == true) { 
 				if(gp.keyH.ePressed) {
-					PicerijaKlientuFrame.pasutisanasPanelis(); 
+					PicerijaKlientuFrame.KlientaPanelis(); 
 					gp.keyH.ePressed = false;
 				}
 			}
