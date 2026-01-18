@@ -80,7 +80,7 @@ public class EventHandler {
 			    teleport(2, 10, 18);
 			}
 			//darbinieka dators
-			if(hit(2, 18, 14, "up") == true) { 
+			if(hit(2, 18, 15, "any") == true) { 
 			    if(gp.keyH.ePressed) {
 			        if(gp.player.Darbs == 1) {
 			            PizerijasDarbiniekuFrame.raditDarbiniekaPaneli();

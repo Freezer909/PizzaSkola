@@ -5,6 +5,9 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Random;
 
 import javax.swing.JButton;
@@ -12,6 +15,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import entity.Player;
@@ -30,9 +35,11 @@ public class PizerijasDarbiniekuFrame {
 
         JPanel redigetPanel = izveidotRedigesanasPaneli();
         JPanel darbaPanel = izveidotDarbaPaneli();
+        JPanel pasutijumuPanel = izveidotPasutijumuPaneli();
 
         mainContent.add(redigetPanel, "REDIGET");
         mainContent.add(darbaPanel, "DARBS");
+        mainContent.add(pasutijumuPanel, "PASUTIJUMI");
 
         JPanel izvelne = izveidotIzvelnesPaneli(cl, mainContent);
 
@@ -50,18 +57,58 @@ public class PizerijasDarbiniekuFrame {
 
         JButton btnRediget = new JButton("Rediģēt ēdienkarti");
         JButton btnDarbs = new JButton("Strādāt");
+        JButton btnPasutijumi = new JButton("Pasūtījumi");
 
         btnRediget.setBounds(20, 280, 160, 50);
         btnDarbs.setBounds(20, 350, 160, 50);
+        btnPasutijumi.setBounds(20, 420, 160, 50);
 
         btnRediget.setFocusable(false);
         btnDarbs.setFocusable(false);
+        btnPasutijumi.setFocusable(false);
 
         btnRediget.addActionListener(e -> cl.show(main, "REDIGET"));
         btnDarbs.addActionListener(e -> cl.show(main, "DARBS"));
+        btnPasutijumi.addActionListener(e -> cl.show(main, "PASUTIJUMI"));
 
         panel.add(btnRediget);
         panel.add(btnDarbs);
+        panel.add(btnPasutijumi);
+
+        return panel;
+    }
+
+    private static JPanel izveidotPasutijumuPaneli() {
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(new Color(245, 245, 245));
+
+        JLabel virsraksts = new JLabel("VEIKTIE PASŪTĪJUMI");
+        virsraksts.setFont(new Font("Arial", Font.BOLD, 22));
+        virsraksts.setBounds(50, 30, 300, 40);
+        panel.add(virsraksts);
+
+        JTextArea txtPasutijumi = new JTextArea();
+        txtPasutijumi.setEditable(false);
+        
+        JScrollPane scroll = new JScrollPane(txtPasutijumi);
+        scroll.setBounds(50, 90, 1000, 550);
+        panel.add(scroll);
+
+        JButton btnAtjaunot = new JButton("Atjaunot");
+        btnAtjaunot.setBounds(50, 660, 150, 40);
+        btnAtjaunot.addActionListener(e -> {
+            txtPasutijumi.setText("");
+            try (BufferedReader br = new BufferedReader(new FileReader("Pasutijumi.txt"))) {
+                String rinda;
+                while ((rinda = br.readLine()) != null) {
+                    txtPasutijumi.append(rinda + "\n");
+                }
+            } catch (IOException ex) {
+                txtPasutijumi.setText("Kļūda lasot failu.");
+            }
+        });
+        panel.add(btnAtjaunot);
 
         return panel;
     }
@@ -76,7 +123,7 @@ public class PizerijasDarbiniekuFrame {
         virsraksts.setBounds(50, 30, 400, 40);
         panel.add(virsraksts);
 
-        // --- Picas pievienošana ---
+        // Picas pievienošana 
         JLabel lblPicaVirsraksts = new JLabel("PIEVIENOT PICU");
         lblPicaVirsraksts.setFont(new Font("Arial", Font.BOLD, 14));
         lblPicaVirsraksts.setBounds(50, 90, 200, 25);
@@ -123,7 +170,7 @@ public class PizerijasDarbiniekuFrame {
         });
         panel.add(btnPievienotPicu);
 
-        // --- Piedevas ---
+        //Piedevas 
         JLabel lblPiedevaVirsraksts = new JLabel("PIEVIENOT PAPILDU PIEDEVU");
         lblPiedevaVirsraksts.setFont(new Font("Arial", Font.BOLD, 14));
         lblPiedevaVirsraksts.setBounds(50, 280, 300, 25);
@@ -146,7 +193,7 @@ public class PizerijasDarbiniekuFrame {
         });
         panel.add(btnPiedeva);
 
-        // --- Uzkodas ---
+        // Uzkodas
         JLabel lblUzkodaVirsraksts = new JLabel("PIEVIENOT UZKODU");
         lblUzkodaVirsraksts.setFont(new Font("Arial", Font.BOLD, 14));
         lblUzkodaVirsraksts.setBounds(50, 400, 200, 25);
@@ -184,7 +231,6 @@ public class PizerijasDarbiniekuFrame {
 
     private static JPanel izveidotDarbaPaneli() {
         Random rand = new Random();
-        
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setBackground(Color.WHITE);
@@ -198,33 +244,24 @@ public class PizerijasDarbiniekuFrame {
         apraksts.setBounds(50, 80, 400, 25);
         panel.add(apraksts);
 
-        JButton btnStradat = new JButton("STRĀDĀT (+5.00 €)");
+        JButton btnStradat = new JButton("STRĀDĀT (+1.00 €)");
         btnStradat.setFont(new Font("Arial", Font.BOLD, 20));
-
         btnStradat.setBounds(50, 120, 400, 100);
         btnStradat.setBackground(new Color(46, 204, 113));
         btnStradat.setForeground(Color.WHITE);
         btnStradat.setFocusable(false);
 
         btnStradat.addActionListener(e -> {
-        	
             Player.Nauda += 1.0;
-
             int maxX = panel.getWidth() - btnStradat.getWidth();
             int maxY = panel.getHeight() - btnStradat.getHeight();
-
             if (maxX > 0 && maxY > 0) {
-                int jaunsX = rand.nextInt(maxX);
-                int jaunsY = rand.nextInt(maxY);
-                
-                btnStradat.setLocation(jaunsX, jaunsY);
+                btnStradat.setLocation(rand.nextInt(maxX), rand.nextInt(maxY));
             }
-
             panel.repaint();
         });
 
         panel.add(btnStradat);
-
         return panel;
     }
 }

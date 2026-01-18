@@ -40,13 +40,13 @@ public class UI {
 		}
 		//PLAy STATE
 		if(gp.gameState == gp.playState) {
-			g2.drawString("NAUDA = "+ Player.Nauda+"$", 30, 50);
+			g2.drawString("NAUDA = "+ Player.Nauda+"€", 30, 50);
 			if(gp.keyH.checkDrawTime == true) {
-	            g2.setFont(arial_40.deriveFont(20F)); // Smaller font for debug
+	            g2.setFont(arial_40.deriveFont(20F));
 	            g2.setColor(Color.white);
 	            
 	            int x = 10;
-	            int y = 400; // Positioned near the bottom left
+	            int y = 400;
 	            int lineHeight = 25;
 
 	            g2.drawString("WorldX: " + gp.player.worldX, x, y);
