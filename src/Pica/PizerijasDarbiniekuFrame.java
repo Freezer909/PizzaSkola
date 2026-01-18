@@ -141,7 +141,7 @@ public class PizerijasDarbiniekuFrame {
 			try {
 				String nos = txtEdienaNos.getText();
 				double cena = Double.parseDouble(txtEdienaCena.getText());
-				Picerija.papildusEdieni.add(new UzkodasDzerieni(nos, cena));
+				Picerija.Uzkodas.add(new Uzkodas(nos, cena));
 				JOptionPane.showMessageDialog(DarbiniekuPanelis, "Uzkoda '" + nos + "' pievienota!");
 			} catch (Exception ex) { 
 				JOptionPane.showMessageDialog(DarbiniekuPanelis, "Kļūda uzkodas cenas formātā!"); 
@@ -152,7 +152,7 @@ public class PizerijasDarbiniekuFrame {
 			try {
 				String nos = txtDzerienaNos.getText();
 				double cena = Double.parseDouble(txtDzerienaCena.getText());
-				Picerija.dzerieni.add(new UzkodasDzerieni(nos, cena));
+				Picerija.dzerieni.add(new Dzerieni(nos, cena));
 				JOptionPane.showMessageDialog(DarbiniekuPanelis, "Dzēriens '" + nos + "' pievienots!");
 			} catch (Exception ex) { 
 				JOptionPane.showMessageDialog(DarbiniekuPanelis, "Kļūda dzēriena cenas formātā!"); 

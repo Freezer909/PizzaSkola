@@ -6,7 +6,6 @@ public class Pica {
     private String nosaukums;
     private double pamataCena;
     private String izmers; 
-    private String merce;
     private boolean sierainaMalina;
     private ArrayList<String> piedevas = new ArrayList<>();
 
@@ -32,10 +31,6 @@ public class Pica {
 
     public void setIzmers(String izmers) { 
     	this.izmers = izmers; 
-    }
-    
-    public void setMerce(String merce) {
-    	this.merce = merce; 
     }
     
     public void setSierainaMalina(boolean ir) {

@@ -1,10 +1,10 @@
 package Pica;
 
-public class UzkodasDzerieni {
+public class Uzkodas {
     private String nosaukums;
     private double cena;
 
-    public UzkodasDzerieni(String nosaukums, double cena) {
+    public Uzkodas(String nosaukums, double cena) {
         this.nosaukums = nosaukums;
         this.cena = cena;
     }

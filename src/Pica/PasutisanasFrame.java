@@ -234,16 +234,6 @@ public class PasutisanasFrame {
 	    panel.setLayout(null);
 	    panel.setBackground(Color.WHITE);
 
-	    JLabel kopejaCenaLbl = new JLabel("Cena: 0.00€");
-	    kopejaCenaLbl.setFont(new Font("Arial", Font.BOLD, 18));
-	    kopejaCenaLbl.setBounds(280, 255, 150, 45); // Novietota blakus pogai
-	    panel.add(kopejaCenaLbl);
-	    
-	    JLabel piegadeLbl = new JLabel("+ Piegāde: 2.00€");
-	    piegadeLbl.setFont(new Font("Arial", Font.PLAIN, 14));
-	    piegadeLbl.setForeground(Color.GRAY);
-	    piegadeLbl.setBounds(280, 285, 150, 25);
-	    panel.add(piegadeLbl);
 	    
 	    //pizaaa
 	    JLabel picaLbl = new JLabel("Izvēlieties picu:");
@@ -254,6 +244,7 @@ public class PasutisanasFrame {
 	    picasCombo.setBounds(50, 60, 250, 30);
 	    panel.add(picasCombo);
 	    
+	    //picas izmers
 	    JLabel izmersLbl = new JLabel("Izmērs:");
 	    izmersLbl.setBounds(320, 30, 100, 25);
 	    panel.add(izmersLbl);
@@ -261,7 +252,8 @@ public class PasutisanasFrame {
 	    JComboBox<String> izmeruCombo = new JComboBox<>(Picerija.picasIzmeri);
 	    izmeruCombo.setBounds(320, 60, 150, 30);
 	    panel.add(izmeruCombo);
-
+	    
+	    //piedavas picai
 	    JLabel piedevuLbl = new JLabel("Papildus piedevas (0.80€/gab):");
 	    piedevuLbl.setBounds(50, 110, 250, 25);
 	    panel.add(piedevuLbl);
@@ -280,7 +272,7 @@ public class PasutisanasFrame {
 	        yPos += 25;
 	    }
 
-
+	    //Merces
 	    JLabel merceLbl = new JLabel("Mērce:");
 	    merceLbl.setBounds(320, 110, 100, 25);
 	    panel.add(merceLbl);
@@ -288,19 +280,51 @@ public class PasutisanasFrame {
 	    JComboBox<String> mercesCombo = new JComboBox<>(Picerija.visasMerces.toArray(new String[0]));
 	    mercesCombo.setBounds(320, 140, 150, 30);
 	    panel.add(mercesCombo);
+	    
+	    //Uzkodas
+	    JLabel Uzkodas = new JLabel("Uzkodas:");
+	    Uzkodas.setBounds(550, 30, 100, 25);
+	    panel.add(Uzkodas);
 
+	    JComboBox<Uzkodas> UzkodasCombo = new JComboBox<>(Picerija.Uzkodas.toArray(new Uzkodas[0]));
+	    UzkodasCombo.setBounds(550, 60, 150, 30);
+	    panel.add(UzkodasCombo);
+	    
+	    //Uzkodas
+	    JLabel Dzerieni = new JLabel("Dzērieni:");
+	    Dzerieni.setBounds(750, 30, 100, 25);
+	    panel.add(Dzerieni);
 
+	    JComboBox<Dzerieni> DzerieniCombo = new JComboBox<>(Picerija.dzerieni.toArray(new Dzerieni[0]));
+	    DzerieniCombo.setBounds(750, 60, 150, 30);
+	    panel.add(DzerieniCombo);
+
+	    //sieraina malina
 	    JCheckBox chkMalina = new JCheckBox("Sieraina maliņa (+1.50€)");
 	    chkMalina.setBounds(320, 190, 200, 25);
 	    chkMalina.setBackground(Color.WHITE);
 	    panel.add(chkMalina);
 
-
+	    //cenas
+	    JLabel kopejaCenaLbl = new JLabel("Cena: 0.00€");
+	    kopejaCenaLbl.setFont(new Font("Arial", Font.BOLD, 18));
+	    kopejaCenaLbl.setBounds(720, 480, 150, 45); 
+	    panel.add(kopejaCenaLbl);
+	    
+	    JLabel piegadeLbl = new JLabel("+ Piegāde: 2.00€");
+	    piegadeLbl.setFont(new Font("Arial", Font.PLAIN, 14));
+	    piegadeLbl.setForeground(Color.GRAY);
+	    piegadeLbl.setBounds(825, 480, 150, 25);
+	    panel.add(piegadeLbl);
+	    
 
 
 	    ActionListener cenasAtjaunotajs = e -> {
 	        Pica tempPica = (Pica) picasCombo.getSelectedItem();
+	        double kopejaSumma = 0;
+
 	        if (tempPica != null) {
+	            //pica
 	            Pica kalkulators = new Pica(tempPica.getNosaukums(), tempPica.getPamataCena());
 	            kalkulators.setIzmers((String) izmeruCombo.getSelectedItem());
 	            kalkulators.setSierainaMalina(chkMalina.isSelected());
@@ -309,27 +333,41 @@ public class PasutisanasFrame {
 	                if (cb.isSelected()) kalkulators.pievienotPiedevu(cb.getText());
 	            }
 	            
-
-	            double picasCena = kalkulators.aprekinatGalaCenu();
-	            double galaCenaArPiegadi = picasCena + 2.00;
-	            
-	            kopejaCenaLbl.setText("Kopā: " + String.format("%.2f", galaCenaArPiegadi) + "€");
+	            kopejaSumma += kalkulators.aprekinatGalaCenu();
 	        }
+
+	        //uzkodas
+	        Uzkodas izveletaUzkoda = (Uzkodas) UzkodasCombo.getSelectedItem();
+	        if (izveletaUzkoda != null) {
+	            kopejaSumma += izveletaUzkoda.getCena();
+	        }
+
+	        //dzerieni
+	        Dzerieni izveletaisDzeriens = (Dzerieni) DzerieniCombo.getSelectedItem();
+	        if (izveletaisDzeriens != null) {
+	            kopejaSumma += izveletaisDzeriens.getCena();
+	        }
+
+
+	        kopejaSumma += 2.00;
+	        
+	        kopejaCenaLbl.setText("Kopā: " + String.format("%.2f", kopejaSumma) + "€");
 	    };
 
 
 	    picasCombo.addActionListener(cenasAtjaunotajs);
 	    izmeruCombo.addActionListener(cenasAtjaunotajs);
 	    chkMalina.addActionListener(cenasAtjaunotajs);
+	    UzkodasCombo.addActionListener(cenasAtjaunotajs);
+	    DzerieniCombo.addActionListener(cenasAtjaunotajs);
 	    for (JCheckBox cb : piedevuKastes) {
 	        cb.addActionListener(cenasAtjaunotajs);
 	    }
-
-
+    
 	    cenasAtjaunotajs.actionPerformed(null);
 
 	    JButton pirktPoga = new JButton("PIRKT");
-	    pirktPoga.setBounds(50, yPos + 30, 220, 45);
+	    pirktPoga.setBounds(300, 500, 400, 45);
 	    pirktPoga.setBackground(new Color(39, 174, 96));
 	    pirktPoga.setForeground(Color.WHITE);
 	    pirktPoga.setFont(new Font("Arial", Font.BOLD, 16));

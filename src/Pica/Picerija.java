@@ -9,8 +9,8 @@ public class Picerija {
     public static String[] picasIzmeri = {"Mazā", "Vidējā", "Lielā"};
     
     // JAUNIE SARAKSTI
-    public static ArrayList<UzkodasDzerieni> papildusEdieni = new ArrayList<>();
-    public static ArrayList<UzkodasDzerieni> dzerieni = new ArrayList<>();
+    public static ArrayList<Uzkodas> Uzkodas = new ArrayList<>();
+    public static ArrayList<Dzerieni> dzerieni = new ArrayList<>();
 
     public static void DefaultDati() {
         if (picasSaraksts.isEmpty()) {
@@ -29,15 +29,17 @@ public class Picerija {
         }
 
 
-        if (papildusEdieni.isEmpty()) {
-            papildusEdieni.add(new UzkodasDzerieni("Frī kartupeļi", 2.50));
-            papildusEdieni.add(new UzkodasDzerieni("Vistas nageti", 3.80));
+        if (Uzkodas.isEmpty()) {
+        	Uzkodas.add(new Uzkodas("Frī kartupeļi", 2.50));
+        	Uzkodas.add(new Uzkodas("Vistas nageti", 3.80));
+        	Uzkodas.add(new Uzkodas("Bez", 0.0));
         }
 
         if (dzerieni.isEmpty()) {
-            dzerieni.add(new UzkodasDzerieni("Coca-Cola", 1.50));
-            dzerieni.add(new UzkodasDzerieni("Fanta", 1.50));
-            dzerieni.add(new UzkodasDzerieni("Ūdens", 1.00));
+        	dzerieni.add(new Dzerieni("Coca-Cola", 1.50));
+            dzerieni.add(new Dzerieni("Fanta", 1.50));
+            dzerieni.add(new Dzerieni("Ūdens", 1.00));
+            dzerieni.add(new Dzerieni("Bez", 0.00));
         }
     }
 }

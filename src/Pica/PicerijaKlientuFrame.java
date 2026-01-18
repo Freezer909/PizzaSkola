@@ -14,7 +14,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JSeparator;
 
 public class PicerijaKlientuFrame {
 	
@@ -75,7 +74,7 @@ public class PicerijaKlientuFrame {
 		lblDzerieni.setBounds(300, 280, 100, 25);
 		galvenaisLogs.add(lblDzerieni);
 
-		JComboBox<UzkodasDzerieni> comboDzerieni = new JComboBox<>(Picerija.dzerieni.toArray(new UzkodasDzerieni[0]));
+		JComboBox<Uzkodas> comboDzerieni = new JComboBox<>(Picerija.dzerieni.toArray(new Uzkodas[0]));
 		comboDzerieni.setBounds(300, 310, 200, 30);
 		galvenaisLogs.add(comboDzerieni);
 		
