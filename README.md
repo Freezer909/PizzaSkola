@@ -20,12 +20,18 @@ Menu Kontrolēšana Ar W un S, un ENTER
 # Diagrammas:
 
 ## Use Case
-
+# Jauna
 <img width="1062" height="517" alt="Pizzerijas_UseCase_diagramma" src="https://github.com/user-attachments/assets/1ae7c005-a2fa-4420-b538-485d83ee5687" />
 
-## Class Diagramma
+# Veca
+<img width="782" height="461" alt="PD_UseCase_Diagramm_drawio (1)" src="https://github.com/user-attachments/assets/83a742be-f99a-4c39-87e3-64511bedc14f" />
 
+## Class Diagramma
+#Jauna
 <img width="1276" height="805" alt="Pizzerijas_Klasu_Diagramma" src="https://github.com/user-attachments/assets/7a632592-d90e-4dc9-bf0c-cfc9cd43cef7" />
+
+#Veca
+<img width="705" height="371" alt="PD_class_Diagramm_drawio (1)" src="https://github.com/user-attachments/assets/8f788ac8-ab28-4450-a465-0099a0011c4e" />
 
 ## Activity Diagramma
 
