@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Pica {
-    private String nosaukums;
-    private double pamataCena;
-    private String izmers; 
-    private boolean sieraMalina;
+    String nosaukums;
+    double pamataCena;
+    String izmers; 
+    boolean sieraMalina;
     
-    private String[] pamataPiedevas; 
+    String[] pamataPiedevas; 
     
-    private ArrayList<String> papildusPiedevas = new ArrayList<>();
+    ArrayList<String> papildusPiedevas = new ArrayList<>();
 
     public Pica(String nosaukums, double pamataCena, String[] pamataPiedevas) {
         this.nosaukums = nosaukums;
@@ -37,11 +37,25 @@ public class Pica {
         papildusPiedevas.add(piedeva);
     }
     
-    public String[] getPamataPiedevas() { return pamataPiedevas; }
-    public String getNosaukums() { return nosaukums; }
-    public double getPamataCena() { return pamataCena; }
-    public void setIzmers(String izmers) { this.izmers = izmers; }
-    public void setSierainaMalina(boolean ir) { this.sieraMalina = ir; }
+    public String[] getPamataPiedevas() {
+    	return pamataPiedevas;
+    	}
+    
+    public String getNosaukums() { 
+    	return nosaukums; 
+    	}
+    
+    public double getPamataCena() {
+    	return pamataCena; 
+    	}
+    
+    public void setIzmers(String izmers) { 
+    	this.izmers = izmers; 
+    	}
+    
+    public void setSierainaMalina(boolean ir) {
+    	this.sieraMalina = ir; 
+    	}
     
     public String getSastavs() {
 

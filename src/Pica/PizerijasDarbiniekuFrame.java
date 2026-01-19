@@ -23,8 +23,10 @@ import entity.Player;
 
 public class PizerijasDarbiniekuFrame {
 
+	 public static JFrame darbiniekuLogs;
+	
     public static void raditDarbiniekaPaneli() {
-        JFrame darbiniekuLogs = new JFrame("Darbinieku Panelis");
+        darbiniekuLogs = new JFrame("Darbinieku Panelis");
         darbiniekuLogs.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         darbiniekuLogs.setSize(1300, 800);
         darbiniekuLogs.setLocationRelativeTo(null);
@@ -49,7 +51,7 @@ public class PizerijasDarbiniekuFrame {
         darbiniekuLogs.setVisible(true);
     }
 
-    private static JPanel izveidotIzvelnesPaneli(CardLayout cl, JPanel main) {
+    static JPanel izveidotIzvelnesPaneli(CardLayout cl, JPanel main) {
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setPreferredSize(new Dimension(200, 800));
@@ -78,7 +80,7 @@ public class PizerijasDarbiniekuFrame {
         return panel;
     }
 
-    private static JPanel izveidotPasutijumuPaneli() {
+    static JPanel izveidotPasutijumuPaneli() {
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setBackground(new Color(245, 245, 245));
@@ -113,7 +115,7 @@ public class PizerijasDarbiniekuFrame {
         return panel;
     }
 
-    private static JPanel izveidotRedigesanasPaneli() {
+    static JPanel izveidotRedigesanasPaneli() {
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setBackground(new Color(240, 240, 240));
@@ -225,11 +227,45 @@ public class PizerijasDarbiniekuFrame {
             } catch (Exception ex) { JOptionPane.showMessageDialog(null, "Kļūda!"); }
         });
         panel.add(btnUzkoda);
+        
+        // Dzērieni
+        JLabel lblDzeriensVirsraksts = new JLabel("PIEVIENOT DZĒRIENU");
+        lblDzeriensVirsraksts.setFont(new Font("Arial", Font.BOLD, 14));
+        lblDzeriensVirsraksts.setBounds(50, 520, 200, 25);
+        panel.add(lblDzeriensVirsraksts);
+
+        JLabel lblDzeriensNos = new JLabel("Nosaukums:");
+        lblDzeriensNos.setBounds(50, 545, 100, 25);
+        panel.add(lblDzeriensNos);
+
+        JTextField txtDzeriensNos = new JTextField();
+        txtDzeriensNos.setBounds(50, 570, 200, 30);
+        panel.add(txtDzeriensNos);
+
+        JLabel lblDzeriensCena = new JLabel("Cena (€):");
+        lblDzeriensCena.setBounds(260, 545, 80, 25);
+        panel.add(lblDzeriensCena);
+
+        JTextField txtDzeriensCena = new JTextField();
+        txtDzeriensCena.setBounds(260, 570, 80, 30);
+        panel.add(txtDzeriensCena);
+
+        JButton btnDzeriens = new JButton("Pievienot");
+        btnDzeriens.setBounds(360, 570, 120, 30);
+        btnDzeriens.addActionListener(e -> {
+            try {
+            	
+                Picerija.dzerieni.add(new Dzerieni(txtDzeriensNos.getText(), Double.parseDouble(txtDzeriensCena.getText())));
+                JOptionPane.showMessageDialog(null, "Dzēriens pievienots!");
+                txtDzeriensNos.setText(""); txtDzeriensCena.setText("");
+            } catch (Exception ex) { JOptionPane.showMessageDialog(null, "Kļūda!"); }
+        });
+        panel.add(btnDzeriens);
 
         return panel;
     }
 
-    private static JPanel izveidotDarbaPaneli() {
+    static JPanel izveidotDarbaPaneli() {
         Random rand = new Random();
         JPanel panel = new JPanel();
         panel.setLayout(null);

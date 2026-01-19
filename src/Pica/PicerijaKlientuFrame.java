@@ -41,7 +41,7 @@ public class PicerijaKlientuFrame {
         galvenaisLogs.setVisible(true);
     }
     
-    private static JPanel IzvelesPanelis(CardLayout cl, JPanel main) {
+    static JPanel IzvelesPanelis(CardLayout cl, JPanel main) {
         JPanel izv = new JPanel();
         izv.setLayout(null); 
         izv.setPreferredSize(new Dimension(200, 800));
@@ -56,7 +56,7 @@ public class PicerijaKlientuFrame {
         return izv;
     }
 
-    private static JPanel KasesPanelis() {
+    static JPanel KasesPanelis() {
         Picerija.DefaultDati();
         
         JPanel panel = new JPanel();

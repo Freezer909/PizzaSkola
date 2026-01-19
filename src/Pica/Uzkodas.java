@@ -1,8 +1,8 @@
 package Pica;
 
 public class Uzkodas {
-    private String nosaukums;
-    private double cena;
+    String nosaukums;
+    double cena;
 
     public Uzkodas(String nosaukums, double cena) {
         this.nosaukums = nosaukums;

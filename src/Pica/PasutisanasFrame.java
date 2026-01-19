@@ -46,7 +46,7 @@ public class PasutisanasFrame {
         pasutisanasPanels.setVisible(true);
     }
     
-    private static JPanel IzvelesPanelis(CardLayout cl, JPanel main) {
+    static JPanel IzvelesPanelis(CardLayout cl, JPanel main) {
         JPanel izv = new JPanel();
         izv.setLayout(null); 
         izv.setPreferredSize(new Dimension(200, 800));
@@ -70,7 +70,7 @@ public class PasutisanasFrame {
         return izv;
     }
 
-    private static JPanel AdresePanelis() {
+    static JPanel AdresePanelis() {
 
     	JPanel panel = new JPanel();
     	panel.setLayout(null);
@@ -186,7 +186,7 @@ public class PasutisanasFrame {
     	return panel;
     }
 
-    private static JPanel PasutitPanelis() {
+    static JPanel PasutitPanelis() {
         Picerija.DefaultDati();
         
         JPanel panel = new JPanel();
